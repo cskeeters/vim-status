@@ -3,7 +3,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 function! status#Diff()
-    set diffopt=internal,filler,context:1000000
+    set diffopt+=context:1000000
 
     windo diffthis
 
