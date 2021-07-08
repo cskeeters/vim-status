@@ -1,0 +1,48 @@
+*status.txt* Plugin for showing RCS status and reviewing changes
+
+==============================================================================
+Contents                                      *vim-status* *vim-status-contents*
+
+         1. Intro ........................... |vim-status-intro|
+         1. Key mappings .................... |vim-status-mappings|
+
+==============================================================================
+1. Intro                                                    *vim-status-intro*
+
+Once I get changes working, I often want to review all of the changes I have
+made.  Often I want to remove blocks of code that I added for debugging or
+testing.  This plugin is designed to allow me to review modified files for code
+I want to remove or refine.  It does this by showing me a list of the modified
+files via loading hg or git status into a buffer.  Then I can move my cursor
+to a line with a file modification and press 'd' and the plugin will load a
+new tab with the modified file in a left vsplit, and the original file on the
+right.  This enables 'do' (diff obtain) to revert sections of the modified
+file easily.
+
+==============================================================================
+1. Mappings                                              *vim-status-mappings*
+
+Use the OpenStatus command to load a buffer with status.  I suggest the
+following mapping in your .vimrc.
+>
+    nmap <silent> <C-j>s :OpenStatus<CR>
+<
+
+Once the status window is open, the following mappings have been defined for
+you.
+
+    d : Open the file in a new tab with a vertical split showing the differences
+    o : Open the file in a new tab
+    r : Reloads the status
+
+NOTE: If you diff one file at a time, when you close the buffer of the
+modified file, the plugin will close the tab for you that includes the
+unmodified buffer.
+
+==============================================================================
+1. Credit                                                  *vim-status-credit*
+
+vim-status was developed by Chad Skeeters <github.com/cskeeters>.
+Distributed under Vim's |license|.
+
+ vim:tw=78:ts=8:ft=help:norl:
