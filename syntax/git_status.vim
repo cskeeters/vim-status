@@ -4,7 +4,8 @@ if exists("b:current_syntax")
 endif
 
 syn region fileMod start=/\vmodified: / end=+$+ oneline
-syn region fileUnk start=/\v^\? / end=+$+ oneline
+syn region fileAdd start=/\vnew file: / end=+$+ oneline
+" syn region fileUnk start=/\v^\? / end=+$+ oneline
 syn region fileDel start=/\vdeleted: / end=+$+ oneline
 
 hi default link fileMod Directory
