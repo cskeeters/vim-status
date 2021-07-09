@@ -115,6 +115,7 @@ function! status#GitDiff(line)
 endfunction
 
 function! status#HGReloadStatus()
+    let lineno = line('.')
     setlocal modifiable
 
     " ! - Dont' use mappings
@@ -125,9 +126,13 @@ function! status#HGReloadStatus()
 
     setfiletype hg_status
     setlocal nomodifiable
+
+    let new_lineno = min([l:lineno, line('$')])
+    execute "normal! ".new_lineno."G"
 endfunction
 
 function! status#GitReloadStatus()
+    let lineno = line('.')
     setlocal modifiable
 
     " ! - Dont' use mappings
@@ -138,6 +143,9 @@ function! status#GitReloadStatus()
 
     setfiletype git_status
     setlocal nomodifiable
+
+    let new_lineno = min([l:lineno, line('$')])
+    execute "normal! ".new_lineno."G"
 endfunction
 
 function! status#OpenStatus()
