@@ -19,6 +19,36 @@ function! status#Diff()
     norm! gg]c
 endfunction
 
+function! status#HGAdd(line)
+    " Must be single quotes in the patterns
+    let groups = matchlist(a:line, '\v\?\s+([^ 	]*)')
+
+    if len(l:groups) == 0
+        echom "Invalid line: ".a:line
+        return
+    endif
+
+    let filename = l:groups[1]
+
+    silent execute "!hg add ".l:filename
+    call status#HGReloadStatus()
+endfunction
+
+function! status#HGForget(line)
+    " Must be single quotes in the patterns
+    let groups = matchlist(a:line, '\vA\s+([^ 	]*)')
+
+    if len(l:groups) == 0
+        echom "Invalid line: ".a:line
+        return
+    endif
+
+    let filename = l:groups[1]
+
+    silent execute "!hg forget ".l:filename
+    call status#HGReloadStatus()
+endfunction
+
 function! status#HgOpen(line)
     " Must be single quotes in the patterns
     let groups = matchlist(a:line, '\v([MAR?])\s+([^ 	]*)')
@@ -114,6 +144,36 @@ function! status#GitDiff(line)
     call status#Diff()
 endfunction
 
+function! status#GitAdd(line)
+    " Must be single quotes in the patterns
+    let groups = matchlist(a:line, '\v^\t(modified: +)?([^ 	]*)')
+
+    if len(l:groups) == 0
+        echom "Invalid line: ".a:line
+        return
+    endif
+
+    let filename = l:groups[2]
+
+    silent execute "!git add ".l:filename
+    call status#GitReloadStatus()
+endfunction
+
+function! status#GitForget(line)
+    " Must be single quotes in the patterns
+    let groups = matchlist(a:line, '\v(new file|modified):\s+([^ 	]*)')
+
+    if len(l:groups) == 0
+        echom "Invalid line: ".a:line
+        return
+    endif
+
+    let filename = l:groups[2]
+
+    silent execute "!git reset ".l:filename
+    call status#GitReloadStatus()
+endfunction
+
 function! status#HGReloadStatus()
     let lineno = line('.')
     setlocal modifiable
@@ -159,6 +219,8 @@ function! status#OpenStatus()
         call status#HGReloadStatus()
 
         nmap <silent> <buffer> d :call status#HGDiff(getline("."))<cr>
+        nmap <silent> <buffer> a :call status#HGAdd(getline("."))<cr>
+        nmap <silent> <buffer> f :call status#HGForget(getline("."))<cr>
         nmap <silent> <buffer> r :call status#HGReloadStatus()<cr>
         nmap <silent> <buffer> o :call status#HgOpen(getline("."))<cr>
     endif
@@ -167,6 +229,8 @@ function! status#OpenStatus()
         call status#GitReloadStatus()
 
         nmap <silent> <buffer> d :call status#GitDiff(getline("."))<cr>
+        nmap <silent> <buffer> a :call status#GitAdd(getline("."))<cr>
+        nmap <silent> <buffer> f :call status#GitForget(getline("."))<cr>
         nmap <silent> <buffer> r :call status#GitReloadStatus()<cr>
         nmap <silent> <buffer> o :call status#GitOpen(getline("."))<cr>
     endif
