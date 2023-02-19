@@ -107,11 +107,27 @@ function! status#HGDiff(line)
     endif
 endfunction
 
+function! status#GitOpen(line)
+    " Must be single quotes in the patterns
+    let groups = matchlist(a:line, '\v^.. (.*)')
+
+    if len(l:groups) == 0
+        echom "Invalid line: ".a:line
+        return
+    endif
+
+    let type = l:groups
+    let filename = l:groups[1]
+
+    tabnew
+
+    execute "e! ".l:filename
+endfunction
+
 function! status#GitDiff(line)
     " Must be single quotes in the patterns
-    let groups = matchlist(a:line, '\vmodified:\s+([^ 	]*)')
+    let groups = matchlist(a:line, '\v^.. (.*)')
 
-    " let groups = matchlist(a:line, '\v(.+)')
     if len(l:groups) == 0
         echom "Invalid line: ".a:line
         return
@@ -146,14 +162,14 @@ endfunction
 
 function! status#GitAdd(line)
     " Must be single quotes in the patterns
-    let groups = matchlist(a:line, '\v^\t(modified: +)?([^ 	]*)')
+    let groups = matchlist(a:line, '\v^.. (.*)')
 
     if len(l:groups) == 0
         echom "Invalid line: ".a:line
         return
     endif
 
-    let filename = l:groups[2]
+    let filename = l:groups[1]
 
     silent execute "!git add ".l:filename
     call status#GitReloadStatus()
@@ -161,14 +177,14 @@ endfunction
 
 function! status#GitForget(line)
     " Must be single quotes in the patterns
-    let groups = matchlist(a:line, '\v(new file|modified):\s+([^ 	]*)')
+    let groups = matchlist(a:line, '\v^.. (.*)')
 
     if len(l:groups) == 0
         echom "Invalid line: ".a:line
         return
     endif
 
-    let filename = l:groups[2]
+    let filename = l:groups[1]
 
     silent execute "!git reset ".l:filename
     call status#GitReloadStatus()
@@ -198,7 +214,7 @@ function! status#GitReloadStatus()
     " ! - Dont' use mappings
     normal! ggdG
 
-    silent read !git status
+    silent read !git status -s
     normal! ggdd
 
     setfiletype git_status
