@@ -5,4 +5,4 @@ This is a vim plugin for reviewing the changed files in a working mercurial or g
 This plugin depends on [vcvars][vcvars]
 
 [vcvars]: https://github.com/cskeeters/vim-vcvars
-[txt-doc]: https://raw.githubusercontent.com/cskeeters/vim-make/master/doc/make.txt
+[txt-doc]: https://raw.githubusercontent.com/cskeeters/vim-status/master/doc/status.txt
