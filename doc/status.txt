@@ -34,6 +34,8 @@ you.
     d : Open the file in a new tab with a vertical split showing the differences
     o : Open the file in a new tab
     r : Reloads the status
+    a : Adds the file to the staging area (git only)
+    f : Removes the file from the staging area (git only)
 
 NOTE: If you diff one file at a time, when you close the buffer of the
 modified file, the plugin will close the tab for you that includes the
